@@ -1,0 +1,237 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="WebApplication2.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html lang="fr">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - Mon ASP.NET Application</title>
+
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+    <style>
+      .navbar2 {
+    display: flex; /* Utilise Flexbox pour l'alignement des éléments */
+    justify-content: center; /* Centre les éléments horizontalement */
+    background-color: #00A7C3; /* Couleur de fond de la barre de navigation */
+    color: white;
+    padding: 5px 0; /* Réduit l'espacement intérieur (padding) en haut et en bas */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre portée pour un effet de profondeur */
+    height: auto; /* Assure que la hauteur s'adapte au contenu */
+}
+
+/* Style des liens de navigation */
+.navbar2 a {
+    color: white; /* Couleur du texte des liens */
+    padding: 8px 16px; /* Réduit l'espacement intérieur des liens */
+    text-decoration: none; /* Supprime le soulignement des liens */
+    text-align: center; /* Centre le texte à l'intérieur des liens */
+    font-size: 14px; /* Réduit la taille de la police des liens */
+    line-height: 1.5; /* Hauteur de ligne pour centrer verticalement le texte */
+    transition: background-color 0.3s, color 0.3s; /* Animation fluide pour les changements de couleur */
+}
+
+/* Effet au survol des liens */
+.navbar2 a:hover {
+    background-color: #007187; /* Couleur de fond au survol */
+    color: white; /* Couleur du texte au survol */
+    border-radius: 4px; /* Coins arrondis pour les liens au survol */
+}
+
+/* Style du lien actif (pour la page courante) */
+.navbar2 a.active {
+    background-color: #007187; /* Couleur de fond pour le lien actif */
+    color: white; /* Couleur du texte pour le lien actif */
+    border-radius: 4px; /* Coins arrondis pour le lien actif */
+}
+
+.content-highlight {
+    background-color: #007187; /* Même couleur de fond que le navbar */
+    color: white; /* Couleur du texte */
+    padding: 10px; /* Espacement intérieur pour la mise en forme */
+    border: 6px solid #00A7C3;
+    text-align: center;/* Bordure de la même couleur que le lien actif */
+    border-radius: 4px; /* Coins arrondis pour la bordure */
+    margin: 10px 0; /* Espacement autour de l'élément */
+}
+
+ .validation-box {
+        border: 1px solid #ccc;
+        padding: 10px;
+        width: 200px;
+        text-align: center;
+        background-color: #f9f9f9;
+    }
+
+    .box-header {
+        font-weight: bold;
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .box-content {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .box-footer {
+        font-size: 12px;
+        color: #555;
+    }
+
+    hr {
+        border: 0;
+        border-top: 1px solid #ccc;
+        margin: 10px 0;
+    }
+     .red{
+     color:red;
+ }
+    
+    
+#panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    width: 300px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    
+}
+
+
+
+
+   
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.GridViewStyle {
+    border-collapse: collapse; /* Empêche la fusion des bordures adjacentes */
+    width: 100%;
+}
+
+.GridViewColumnHeader, .GridViewColumnItem {
+    border-right: 1px solid #ddd; /* Ajoute une bordure à droite de chaque colonne */
+    padding: 8px; /* Ajoute un peu de padding pour l'esthétique */
+}
+
+.GridViewColumnHeader {
+    border-bottom: 2px solid #444; /* Ajoute une bordure en bas des en-têtes de colonne */
+    font-weight: bold; /* Rend le texte de l'en-tête en gras pour le démarquer */
+    background-color: #f2f2f2; /* Ajoute une couleur de fond à l'en-tête */
+}
+
+.GridViewColumnHeader:last-child, .GridViewColumnItem:last-child {
+    border-right: none; /* Supprime la bordure après la dernière colonne */
+}
+
+
+
+.validation-panel {
+    display:none;
+    position: absolute; /* Position absolue pour permettre le positionnement dynamique */
+    background-color: white;
+    border: 1px solid #ccc;
+    width: 410px;
+    height: 400px;/* Largeur fixe ou ajustable */
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Superposition au-dessus des autres éléments */
+}
+
+.validation-table {
+    width: 100%; /* Largeur du tableau égale à celle du panel */
+    height: calc(100% - 60px); /* Ajuster la hauteur du tableau en fonction de l'espace disponible */
+    border-collapse: collapse; /* Pour éviter les espaces entre les cellules */
+}
+
+.validation-table td {
+    padding: 10px; /* Ajouter un peu de padding pour l'espacement */
+    border: 1px solid #ddd; /* Ajouter une bordure légère aux cellules */
+}
+
+.validation-table th {
+    padding: 10px; /* Ajouter un peu de padding pour les en-têtes */
+    border: 1px solid #ddd; /* Ajouter une bordure légère aux en-têtes */
+    background-color: #f4f4f4; /* Couleur de fond différente pour les en-têtes */
+}
+
+.textbox-small {
+    width: 40px; /* Ajuste la largeur pour contenir un ou deux chiffres */
+    text-align: center; /* Centre le texte à l'intérieur du TextBox */
+}
+
+.text-small {
+        font-size: 0.75em; /* Taille du texte plus petite */
+    }
+    </style>
+
+     
+
+
+</head>
+<body>
+    <form runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server" />
+
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" runat="server" href="~/">CRM netcom group</a>
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Activer/désactiver la navigation" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <asp:LoginStatus runat="server" CssClass="nav-link" LogoutAction="Redirect" LogoutText="Déconnexion" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
+                        </li>
+                  
+                        </ul>
+                        
+                        <ul class="navbar-nav navbar-right">     
+                            <li><a runat="server" class="nav-link"  title="Manage your account">Bonjour, <%: Context.User.Identity.GetUserName()  %> !</a></li>
+                        </ul>
+                </div>
+            </div>
+        </nav>
+       
+        <div class="container body-content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+            <hr />
+            <footer>
+                <p>&copy; <%: DateTime.Now.Year %> - Mon application ASP.NET</p>
+            </footer>
+        </div>
+    </form>
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/Scripts/bootstrap.js") %>
+    </asp:PlaceHolder>
+</body>
+</html>
+
+    

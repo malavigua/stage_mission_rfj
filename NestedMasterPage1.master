@@ -1,0 +1,96 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="NestedMasterPage1.master.cs" Inherits="WebApplication2.NestedMasterPage1" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server"> 
+ 
+    <asp:Panel ID="PanelBilan" runat="server" Visible="false">
+
+    <p class="content-highlight">BILAN DES DEMANDES</p>
+ 
+            <br />
+            <br />
+            <div style="display: flex; justify-content: space-around;">
+            
+            <div id="validationBoxValidé" class="validation-box" onclick="document.getElementById('<%= Valide.ClientID %>' ).click()">
+                <div class="box-header">Validé</div>
+                <div class="box-content">
+                    <asp:Literal ID="LiteralValidatedDays" runat="server">0</asp:Literal>
+                </div>
+                <hr />
+                <div class="box-footer">Nombre de jours validés</div>
+            </div>
+            
+            
+            <div id="validationBoxRefusé" class="validation-box" onclick="document.getElementById('<%= Refus.ClientID %>' ).click()" >
+                <div class="box-header">Refusé</div>
+                <div class="box-content">
+                    <asp:Literal ID="LiteralRefusedDays" runat="server">0</asp:Literal>
+                </div>
+                <hr />
+                <div class="box-footer">Nombre de jours refusés</div>
+            </div>
+
+                  
+
+
+            <div id="validationBoxEnAttenteRH" class="validation-box" onclick="document.getElementById('<%= AttenteRH.ClientID %>' ).click()" >
+                <div class="box-header">En attente</div>
+                <div class="box-content">
+                    <asp:Literal ID="LiteralPendingDaysRH" runat="server">0</asp:Literal>
+                </div>
+                <hr />
+                <div class="box-footer">Nombre de jours en attente</div>
+            </div>
+  
+         
+            <div id="validationBoxEnAttenteResp" class="validation-box" onclick="document.getElementById('<%= AttenteResp.ClientID %>' ).click()" >
+                <div class="box-header">En attente RG</div>
+                <div class="box-content">
+                    <asp:Literal ID="LiteralPendingDaysResp" runat="server">0</asp:Literal>
+                </div>
+                <hr />
+                <div class="box-footer">Nombre de jours en attente RG</div>
+            </div>
+        </div>
+    
+        <asp:Button ID="Valide"  CommandName="Validé" runat="server" style="display:none;" OnCommand="ButtonValidationBox_Click" />
+        <asp:Button ID="Refus"  CommandName="Refusé" runat="server" style="display:none;" OnCommand="ButtonValidationBox_Click" />
+        <asp:Button ID="AttenteRH"  CommandName="En attente de validation RH" runat="server" style="display:none;" OnCommand="ButtonValidationBox_Click" />
+        <asp:Button ID="AttenteResp"  CommandName="En attente" runat="server" style="display:none;" OnCommand="ButtonValidationBox_Click" />
+    <br />
+<br />
+</asp:Panel>
+           <asp:Panel ID="Panel1" Visible="false" runat="server">
+               
+                        <div id="panel">
+<span class="close" onclick="closePanel()">&times;</span>
+<asp:Literal ID="Literal2" runat="server">contenu modal</asp:Literal>
+
+
+
+   
+</div>
+        </asp:Panel>
+      
+
+
+             <div class="navbar2">
+    <a  id="HomeLink" href="WebForm1.aspx">Accueil</a>
+    <a  id="Page1Link" >Planning</a>
+    <a  id="Page2Link" runat="server" visible="false" href="Validation.aspx" >Validation</a>
+</div>
+    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"> 
+</asp:ContentPlaceHolder>
+
+       <script type="text/javascript">
+      
+       
+
+       function closePanel() {
+           var modal = document.getElementById('panel');
+         
+           modal.style.display = "none";
+       }
+
+      
+       </script>
+ </asp:Content>
