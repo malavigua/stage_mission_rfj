@@ -75,7 +75,7 @@
 
              <div class="navbar2">
     <a  id="HomeLink" href="WebForm1.aspx">Accueil</a>
-    <a  id="Page1Link" >Planning</a>
+    <a  id="Page1Link" href="WebForm2.aspx">Planning</a>
     <a  id="Page2Link" runat="server" visible="false" href="Validation.aspx" >Validation</a>
 </div>
     <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"> 

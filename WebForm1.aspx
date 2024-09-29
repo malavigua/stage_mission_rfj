@@ -20,9 +20,9 @@
                 <asp:Label ID="lblDemandeur" runat="server" Text="Demandeur" />
                 <asp:TextBox ID="txtDemandeur" runat="server" CssClass="modalInput" Placeholder="Nom"  ReadOnly="true"/>
                 <div class="RadioButton-container">
-                    <asp:RadioButton ID="RadioButton1" runat="server" GroupName="Options" Text="Option 1" />
-                    <asp:RadioButton ID="RadioButton2" runat="server" GroupName="Options" Text="Option 2" />
-                    <asp:RadioButton ID="RadioButton3" runat="server" GroupName="Options" Text="Option 3" />
+                    <asp:RadioButton ID="RadioButton1" runat="server" GroupName="Options" Text="congé" />
+                    <asp:RadioButton ID="RadioButton2" runat="server" GroupName="Options" Text="absence" />
+                    <asp:RadioButton ID="RadioButton3" runat="server" GroupName="Options" Text="RFJ" />
                 </div>
             </div>
             <br /><br />

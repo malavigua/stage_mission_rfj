@@ -177,6 +177,23 @@ namespace WebApplication2
         {
             return NbJourReposForfaitTotal(annee) - CalculerNombreJoursDePont(annee);
         }
+
+        public System.Drawing.Color GetColorByStatus(string statut)
+        {
+            switch (statut)
+            {
+                case "en attente de validation RH":
+                    return System.Drawing.Color.Gold;
+                case "Validé":
+                    return System.Drawing.Color.LightGreen;
+                case "En attente de validation de Responsable":
+                    return System.Drawing.Color.DarkOrange;
+                case "Refusé":
+                    return System.Drawing.Color.Red;
+                default:
+                    return System.Drawing.Color.White; // Couleur par défaut
+            }
+        }
     }
 
 

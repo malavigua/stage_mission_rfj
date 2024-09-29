@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -97,6 +99,17 @@ namespace WebApplication2
             // Retourner le nom d'utilisateur si l'utilisateur est trouvé, sinon retourner null
             return user?.UserName;
         }
+
+        public List<ApplicationUser> GetUsersByTeam(string teamName)
+        {
+            // Récupérer tous les utilisateurs dans la base de données
+            var usersInTeam = this.Users
+                .Where(u => u.Equipe == teamName) // Supposons que 'Equipe' soit une propriété dans votre modèle ApplicationUser
+                .ToList();
+
+            return usersInTeam;
+        }
+
     }
 
     public class ApplicationSignInManager : SignInManager<ApplicationUser, string>

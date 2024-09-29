@@ -153,22 +153,19 @@ namespace WebApplication2
 
                     using (var context = new ApplicationDbContext())
                     {
-                        // Liste des statuts à traiter
-                        var statuts = new[] { "En attente de validation RH", "En attente de validation de Responsable", "Validé", "Refusé" };
+                        // Récupérer tous les statuts pour l'utilisateur sélectionné
+                        Dictionary<DateTime, string> statutsParDate = context.GetStatusByDateForUser(moisVisible, anneeVisible, userId);
 
-                        foreach (var statut in statuts)
+                        // Vérifier si la date actuelle est dans le dictionnaire
+                        if (statutsParDate.ContainsKey(e.Day.Date))
                         {
-                            var demandes = context.GetDemandeRFJByMonthYearAndUserIdAndSatus(moisVisible, anneeVisible, userId, statut);
-                            var jours = context.GetDatesForMonthAndYearFromDemandes(demandes, moisVisible, anneeVisible);
+                            string statut = statutsParDate[e.Day.Date];
 
-                            if (jours.Contains(e.Day.Date))
-                            {
-                                e.Cell.BackColor = System.Drawing.Color.FromName(ObtenirCouleurPourStatut(statut));
-                                e.Cell.ToolTip = statut;
-                                e.Day.IsSelectable = false;
-                                e.Cell.Attributes.Add("class", "nonAccessible");
-                                break; // Assurez-vous de ne pas appliquer plusieurs couleurs pour un seul jour
-                            }
+                            e.Cell.BackColor = baseClass.GetColorByStatus(statut); // Couleur par défaut
+
+                            e.Cell.ToolTip = statut;
+                            e.Day.IsSelectable = false;
+                            e.Cell.Attributes.Add("class", "nonAccessible");
                         }
                     }
 
@@ -210,22 +207,18 @@ namespace WebApplication2
                 {
                     using (var context = new ApplicationDbContext())
                     {
-                        // Liste des statuts à traiter
-                        var statuts = new[] { "En attente de validation RH", "En attente de validation de Responsable", "Validé", "Refusé" };
+                        Dictionary<DateTime, string> statutsParDate = context.GetStatusByDateForUser(moisVisible, anneeVisible, userId);
 
-                        foreach (var statut in statuts)
+                        // Vérifier si la date actuelle est dans le dictionnaire
+                        if (statutsParDate.ContainsKey(e.Day.Date))
                         {
-                            var demandes = context.GetDemandeRFJByMonthYearAndUserIdAndSatus(moisVisible, anneeVisible, userId, statut);
-                            var jours = context.GetDatesForMonthAndYearFromDemandes(demandes, moisVisible, anneeVisible);
+                            string statut = statutsParDate[e.Day.Date];
 
-                            if (jours.Contains(e.Day.Date))
-                            {
-                                e.Cell.BackColor = System.Drawing.Color.FromName(ObtenirCouleurPourStatut(statut));
-                                e.Cell.ToolTip = statut;
-                                e.Day.IsSelectable = false;
-                                e.Cell.Attributes.Add("class", "nonAccessible");
-                                break; // Assurez-vous de ne pas appliquer plusieurs couleurs pour un seul jour
-                            }
+                            e.Cell.BackColor = baseClass.GetColorByStatus(statut); // Couleur par défaut
+
+                            e.Cell.ToolTip = statut;
+                            e.Day.IsSelectable = false;
+                            e.Cell.Attributes.Add("class", "nonAccessible");
                         }
 
 
@@ -280,22 +273,18 @@ namespace WebApplication2
                 {
                     using (var context = new ApplicationDbContext())
                     {
-                        // Liste des statuts à traiter
-                        var statuts = new[] { "En attente de validation RH", "En attente de validation de Responsable", "Validé", "Refusé" };
+                        Dictionary<DateTime, string> statutsParDate = context.GetStatusByDateForUser(moisVisible, anneeVisible, userId);
 
-                        foreach (var statut in statuts)
+                        // Vérifier si la date actuelle est dans le dictionnaire
+                        if (statutsParDate.ContainsKey(e.Day.Date))
                         {
-                            var demandes = context.GetDemandeRFJByMonthYearAndUserIdAndSatus(moisVisible, anneeVisible, userId, statut);
-                            var jours = context.GetDatesForMonthAndYearFromDemandes(demandes, moisVisible, anneeVisible);
+                            string statut = statutsParDate[e.Day.Date];
 
-                            if (jours.Contains(e.Day.Date))
-                            {
-                                e.Cell.BackColor = System.Drawing.Color.FromName(ObtenirCouleurPourStatut(statut));
-                                e.Cell.ToolTip = statut;
-                                e.Day.IsSelectable = false;
-                                e.Cell.Attributes.Add("class", "nonAccessible");
-                                break; // Assurez-vous de ne pas appliquer plusieurs couleurs pour un seul jour
-                            }
+                            e.Cell.BackColor = baseClass.GetColorByStatus(statut); // Couleur par défaut
+
+                            e.Cell.ToolTip = statut;
+                            e.Day.IsSelectable = false;
+                            e.Cell.Attributes.Add("class", "nonAccessible");
                         }
 
 

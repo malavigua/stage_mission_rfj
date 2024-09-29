@@ -247,6 +247,109 @@ namespace WebApplication2.Models
         }
 
 
+        public class DemandeInfo
+        {
+            public string UserName { get; set; }
+            public string Statut { get; set; }
+        }
+
+        public Dictionary<DateTime, List<DemandeInfo>> GetDatesForMonthAndYearFromDemandes2(List<DemandeRFJ> demandes, int mois, int annee)
+        {
+            Dictionary<DateTime, List<DemandeInfo>> datesParJour = new Dictionary<DateTime, List<DemandeInfo>>();
+            DateTime startOfMonth = new DateTime(annee, mois, 1);
+            DateTime endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
+
+            using (var context = new ApplicationDbContext())
+            {
+                foreach (var demande in demandes)
+                {
+                    // Déterminer les dates entre le début et la fin de la demande
+                    DateTime start = demande.DateDebut > startOfMonth ? demande.DateDebut : startOfMonth;
+                    DateTime end = demande.DateFin < endOfMonth ? demande.DateFin : endOfMonth;
+
+                    // Parcourir chaque jour couvert par la demande
+                    for (DateTime date = start; date <= end; date = date.AddDays(1))
+                    {
+                        // Récupérer le nom d'utilisateur à partir de l'ID utilisateur en utilisant le DbContext
+                        var user = context.Users.Find(demande.IdUtilisateur);
+                        string userName = user?.UserName ?? "Utilisateur inconnu"; // Si l'utilisateur n'est pas trouvé
+
+                        // Créer un nouvel objet DemandeInfo contenant l'utilisateur et le statut
+                        var demandeInfo = new DemandeInfo
+                        {
+                            UserName = userName,
+                            Statut = demande.Etat
+                        };
+
+                        // Si la date est déjà dans le dictionnaire
+                        if (datesParJour.ContainsKey(date))
+                        {
+                            // Ajouter la demande info seulement si un utilisateur avec le même statut n'existe pas déjà
+                            if (!datesParJour[date].Any(d => d.UserName == demandeInfo.UserName && d.Statut == demandeInfo.Statut))
+                            {
+                                datesParJour[date].Add(demandeInfo);
+                            }
+                        }
+                        else
+                        {
+                            // Ajouter la date et initialiser la liste de demandes
+                            datesParJour[date] = new List<DemandeInfo> { demandeInfo };
+                        }
+                    }
+                }
+            }
+
+            return datesParJour;
+        }
+
+        public List<DemandeRFJ> GetDemandeRFJByMonthYear(int mois, int annee)
+        {
+            DateTime startOfMonth = new DateTime(annee, mois, 1);
+            DateTime endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
+
+            return DemandeRFJ.Where(d =>
+                // Vérifier si la demande commence ou finit dans le mois visible
+                (d.DateDebut.Month == mois && d.DateDebut.Year == annee) ||
+                    (d.DateFin.Month == mois && d.DateFin.Year == annee)
+            ).ToList();
+        }
+
+
+        public List<DemandeRFJ> GetDemandeRFJByMonthYearAndUserId(int mois, int annee, string userId)
+        {
+            return DemandeRFJ.Where(d =>
+                d.IdUtilisateur == userId &&
+                (
+                    (d.DateDebut.Month == mois && d.DateDebut.Year == annee) ||
+                    (d.DateFin.Month == mois && d.DateFin.Year == annee)
+                )
+            ).ToList();
+        }
+        public Dictionary<DateTime, string> GetStatusByDateForUser(int mois, int annee, string userId)
+        {
+            List<DemandeRFJ> demandes = GetDemandeRFJByMonthYearAndUserId(mois, annee, userId);
+            Dictionary<DateTime, string> statutsParDate = new Dictionary<DateTime, string>();
+
+            foreach (var demande in demandes)
+            {
+                DateTime dateDebut = demande.DateDebut;
+                DateTime dateFin = demande.DateFin;
+
+                // Assumer que chaque demande est active entre DateDebut et DateFin
+                for (DateTime date = dateDebut; date <= dateFin; date = date.AddDays(1))
+                {
+                    if (!statutsParDate.ContainsKey(date))
+                    {
+                        statutsParDate[date] = demande.Etat; // On garde le statut de la demande
+                    }
+                }
+            }
+
+            return statutsParDate;
+        }
+
+
+
     }
 }
 
